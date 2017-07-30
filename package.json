@@ -1,0 +1,39 @@
+{
+  "name": "wellness",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc -w",
+    "start": "concurrently \"npm run build:watch\" \"nodemon\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jetilling/wellness.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jetilling/wellness/issues"
+  },
+  "homepage": "https://github.com/jetilling/wellness#readme",
+  "dependencies": {
+    "@types/bcrypt-nodejs": "0.0.30",
+    "@types/body-parser": "^1.16.4",
+    "@types/cors": "^2.8.1",
+    "@types/dotenv": "^4.0.0",
+    "@types/express": "^4.0.36",
+    "@types/jwt-simple": "^0.5.33",
+    "@types/massive": "^2.2.1",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.2",
+    "cors": "^2.8.4",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.3",
+    "jwt-simple": "^0.5.1",
+    "massive": "^2.7.1",
+    "moment": "^2.18.1",
+    "typescript": "^2.4.2"
+  }
+}
