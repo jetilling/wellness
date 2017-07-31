@@ -43,31 +43,70 @@ let getSafeUser = (user: types.RawUserObject): types.UserObject => {
   }
 }
 
+/**
+ * 
+ * @param req 
+ * @param res 
+ */
 let login = (req: express.Request, res: express.Response) => {
-    db.users.findOne({email: req.body.email}, function(err: types.Error, user: types.RawUserObject) {
-        if (err) return res.status(500)
-        else if (!user) {
-          return res.status(401).send({
-            message: 'Invalid email and/or password'
-          })
-        }
-        else if (!user.validated) return res.status(400).send({
-            message: 'User is not validated'
+    db.users.findOne({email: req.body.email}, function(err: types.Error, user: types.RawUserObject)
+    {
+      if (err) return res.status(500)
+      else if (!user) 
+      {
+        return res.status(401).send({
+          message: 'Invalid email and/or password'
         })
-        else if (user) {
-          db.get_User_Password([user.id], function(err: types.Error, candidatePassword: string){
-            db.comparePassword = function(candidatePassword: string, password: string, cb: types.bcryptCB) {
-              bcrypt.compare(candidatePassword, req.body.password, function(err, isMatch) {
-                cb(err, isMatch);
-              });
-            };
-            db.add_login_date([user.id], function(err: types.Error){
-              if(err) console.log(err)
-            })
-            res.send( getSafeUser(user) )
-          })
-        }
+      }
+      else if (!user.validated) return res.status(400).send({
+          message: 'User is not validated'
       })
+      else if (user) 
+      {
+        db.get_User_Password([user.id], function(err: types.Error, candidatePassword: string)
+        {
+          db.comparePassword = function(candidatePassword: string, password: string, cb: types.bcryptCB)
+          {
+            bcrypt.compare(candidatePassword, req.body.password, function(err, isMatch)
+            {
+              cb(err, isMatch)
+            })
+          }
+          res.send( getSafeUser(user) )
+        })
+      }
+    })
+  }
+
+  /**
+   * 
+   * @param req 
+   * @param res 
+   * @param next 
+   */
+  let register = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    db.users.findOne({ email: req.body.email }, function(err: types.Error, existingUser: types.RawUserObject)
+    {
+      if (existingUser)
+      {
+        return res.status(409).send({ message: 'Email is already taken' })
+      }
+      else 
+      {
+        bcrypt.genSalt(10, function(err, salt)
+        {
+          if (err) return next(err)
+          bcrypt.hash(req.body.password, salt, null, function(err, hash)
+          {
+            if (err) return next(err)
+            db.register_user([req.body.email, hash, req.body.firstName, req.body.lastName], function(err: types.Error, users: types.RawUserObject)
+            {
+                res.send( getSafeUser(users) )
+            })
+          })
+        })
+      }
+    })
   }
 
 
