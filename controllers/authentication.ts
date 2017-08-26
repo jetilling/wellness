@@ -5,17 +5,18 @@ import * as express from 'express';
 import * as moment from 'moment';
 import * as jwt from 'jwt-simple';
 import * as bcrypt from 'bcrypt-nodejs';
-
-//app imports
-import * as app from '../index';
+import * as massive from 'massive';
+import * as dotenv from 'dotenv';
 
 //interfaces
 import * as types from '../typeDefinitions/types';
 
-//
-let router = express.Router();
-let db = (<express.Express>app).get('db');
+/*=====================Configuration======================*/
+dotenv.config({ path: '.env' });
+let authRouter = express.Router();
+const db: any = massive.connectSync({connectionString: process.env.DB_CONNECT})
 
+/*=====================Functions==========================*/
 /**
  * 
  * @param user 
@@ -63,7 +64,7 @@ let login = (req: express.Request, res: express.Response) => {
       })
       else if (user) 
       {
-        db.get_User_Password([user.id], function(err: types.Error, candidatePassword: string)
+        db.get_user_password([user.id], function(err: types.Error, candidatePassword: string)
         {
           db.comparePassword = function(candidatePassword: string, password: string, cb: types.bcryptCB)
           {
@@ -84,8 +85,8 @@ let login = (req: express.Request, res: express.Response) => {
    * @param res 
    * @param next 
    */
-  let register = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    db.users.findOne({ email: req.body.email }, function(err: types.Error, existingUser: types.RawUserObject)
+let register = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    this.db.users.findOne({ email: req.body.email }, function(err: types.Error, existingUser: types.RawUserObject)
     {
       if (existingUser)
       {
@@ -99,7 +100,7 @@ let login = (req: express.Request, res: express.Response) => {
           bcrypt.hash(req.body.password, salt, null, function(err, hash)
           {
             if (err) return next(err)
-            db.register_user([req.body.email, hash, req.body.firstName, req.body.lastName], function(err: types.Error, users: types.RawUserObject)
+            db.register_user([req.body.email, hash, req.body.firstName, 'FALSE', 'FALSE'], function(err: types.Error, users: types.RawUserObject)
             {
                 res.send( getSafeUser(users) )
             })
@@ -109,5 +110,8 @@ let login = (req: express.Request, res: express.Response) => {
     })
   }
 
+/*===========================Endpoints============================*/
+  authRouter.post('/login', login);
+  authRouter.post('/register', register);
 
-
+  export = authRouter;
