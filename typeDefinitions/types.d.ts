@@ -1,3 +1,5 @@
+import * as express from 'express';
+
 export interface UserObject {
   id: number,
   email: string,
@@ -22,3 +24,6 @@ export interface bcryptCB {
   (err: Error, isMatch: boolean): boolean
 }
 
+export interface expressRequest extends express.Request {
+  user: any
+}
