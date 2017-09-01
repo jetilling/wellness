@@ -12,7 +12,7 @@ import * as types from '../typeDefinitions/types';
 
 dotenv.config({ path: '.env' });
 let updateStatusRouter = express.Router();
-const db: any = massive.connectSync({connectionString: process.env.DB_CONNECT})
+//const db: any = massive.connectSync({connectionString: process.env.DB_CONNECT})
 
 /*=====================Functions==========================*/
 
@@ -20,5 +20,14 @@ const db: any = massive.connectSync({connectionString: process.env.DB_CONNECT})
  * 
  */
 let updateStatus = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-
+  req.app.get('db').update_status([req.body.userId, req.body.emotion, req.body.status], (err: types.Error) => {
+    if(err) console.log(err);
+    else res.status(200).send('success');
+  })
 }
+
+/*===========================Endpoints============================*/
+
+updateStatusRouter.post('/updateStatus', updateStatus);
+
+export = updateStatusRouter;

@@ -5,18 +5,20 @@ import * as express from 'express';
 import * as moment from 'moment';
 import * as jwt from 'jwt-simple';
 import * as bcrypt from 'bcrypt-nodejs';
-import * as massive from 'massive';
+import * as randToken from 'rand-token';
+
 import * as dotenv from 'dotenv';
 
 //interfaces
 import * as types from '../typeDefinitions/types';
 
 /*=====================Configuration======================*/
+
 dotenv.config({ path: '.env' });
 let authRouter = express.Router();
-const db: any = massive.connectSync({connectionString: process.env.DB_CONNECT})
 
 /*=====================Functions==========================*/
+
 /**
  * 
  * @param user 
@@ -50,30 +52,29 @@ let getSafeUser = (user: types.RawUserObject): types.UserObject => {
  * @param res 
  */
 let login = (req: express.Request, res: express.Response) => {
-    db.users.findOne({email: req.body.email}, function(err: types.Error, user: types.RawUserObject)
-    {
-      if (err) return res.status(500)
-      else if (!user) 
+  let db = req.app.get('db');
+  db.users.findOne({email: req.body.email}).then((result: types.RawUserObject) => {
+      if (!result) 
       {
         return res.status(401).send({
           message: 'Invalid email and/or password'
         })
       }
-      else if (!user.validated) return res.status(400).send({
+      else if (!result.validated) return res.status(400).send({
           message: 'User is not validated'
       })
-      else if (user) 
+      else if (result) 
       {
-        db.get_user_password([user.id], function(err: types.Error, candidatePassword: string)
-        {
-          db.comparePassword = function(candidatePassword: string, password: string, cb: types.bcryptCB)
-          {
+        db.users.where(
+          'SELECT password FROM users WHERE id = $1',
+          {id: result.id}
+        ).then((candidatePassword: string) => {
             bcrypt.compare(candidatePassword, req.body.password, function(err, isMatch)
             {
-              cb(err, isMatch)
+              console.log("isMatch: ", isMatch)
+              return isMatch
             })
-          }
-          res.send( getSafeUser(user) )
+          res.send( getSafeUser(result) )
         })
       }
     })
@@ -86,31 +87,46 @@ let login = (req: express.Request, res: express.Response) => {
    * @param next 
    */
 let register = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    this.db.users.findOne({ email: req.body.email }, function(err: types.Error, existingUser: types.RawUserObject)
-    {
-      if (existingUser)
+  let db = req.app.get('db');
+    db.users.findOne({ email: req.body.email }).then((result: types.RawUserObject) => {
+      if (result)
       {
         return res.status(409).send({ message: 'Email is already taken' })
       }
       else 
-      {
+      { 
+        let token = randToken.generate(16);
         bcrypt.genSalt(10, function(err, salt)
         {
           if (err) return next(err)
           bcrypt.hash(req.body.password, salt, null, function(err, hash)
           {
             if (err) return next(err)
-            db.register_user([req.body.email, hash, req.body.firstName, 'FALSE', 'FALSE'], function(err: types.Error, users: types.RawUserObject)
-            {
-                res.send( getSafeUser(users) )
+
+            db.users.insert({
+              email: req.body.email,
+              password: hash, 
+              firstname: req.body.firstName, 
+              activated: 'FALSE',
+              email_validated: 'FALSE',
+              validation_token: token
+            }).then((result: types.RawUserObject) => {
+
+                res.send( getSafeUser(result) )
+                
+            }).catch((err: types.Error) => {
+              console.log(err)
             })
           })
         })
       }
+    }).catch((err: types.Error) => {
+      console.log(err)
     })
   }
 
 /*===========================Endpoints============================*/
+
   authRouter.post('/login', login);
   authRouter.post('/register', register);
 
