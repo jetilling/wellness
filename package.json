@@ -2,7 +2,7 @@
   "name": "wellness",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "start.js",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc -w",
