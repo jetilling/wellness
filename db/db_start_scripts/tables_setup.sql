@@ -14,5 +14,6 @@ CREATE TABLE statuses (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES users(id),
   emotion INTEGER,
-  status TEXT
+  status TEXT,
+  created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 );

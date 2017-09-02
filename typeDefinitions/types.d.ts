@@ -21,6 +21,10 @@ export interface Error {
 
 }
 
+export interface RawStatusData {
+  created_on: Date
+}
+
 export interface expressRequest extends express.Request {
   user: any
 }

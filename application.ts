@@ -1,6 +1,8 @@
 "use strict"
 
-//npm packages
+/*  
+    Import npm packages
+*/ 
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import * as dotenv from 'dotenv';
@@ -10,9 +12,15 @@ import * as moment from 'moment';
 import * as massive from 'massive';
 import * as express from 'express';  
 
+/*  
+    Import controllers
+*/ 
 import * as authentication from './controllers/authentication';
 import * as statuses from './controllers/statuses';
 
+/*  
+    Import type interfaces
+*/ 
 import * as types from './typeDefinitions/types.d';
 
 export class WebApi 
@@ -43,7 +51,9 @@ export class WebApi
   }
 
   /**
+   * Configure Routes
    * 
+   * @description
    * @param app 
    */
   private configureRoutes(app: express.Express)
@@ -54,6 +64,7 @@ export class WebApi
 
   /**
    * 
+   * @description
    */
   public run() 
   {
