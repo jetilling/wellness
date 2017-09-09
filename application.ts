@@ -17,12 +17,16 @@ import * as express from 'express';
 */ 
 import * as authentication from './controllers/authentication';
 import * as statuses from './controllers/statuses';
+import * as goals from './controllers/goals';
 
 /*  
     Import type interfaces
 */ 
 import * as types from './typeDefinitions/types.d';
 
+/*
+    Export WebApi Class
+*/
 export class WebApi 
 {
 
@@ -60,6 +64,7 @@ export class WebApi
   {
     app.use('/auth', authentication);
     app.use('/statuses', this.ensureAuthenticated, statuses);
+    app.use('/goals', this.ensureAuthenticated, goals);
   }
 
   /**
@@ -69,8 +74,8 @@ export class WebApi
   public run() 
   {
     this.app.listen(this.port, () => {
-      console.log('This part works on ', this.port)
-    })
+      console.log('Listening on ', this.port)
+    }) 
   }
 
   /*===========================Middleware============================*/

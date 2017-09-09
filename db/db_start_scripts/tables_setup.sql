@@ -6,7 +6,8 @@ Create table users (
   firstname VARCHAR(80),
   activated BOOLEAN,
   email_validated BOOLEAN,
-  validation_token TEXT
+  validation_token TEXT,
+  phone_number TEXT
 );
 
 -- Create statuses table

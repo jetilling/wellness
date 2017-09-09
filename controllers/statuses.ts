@@ -35,7 +35,7 @@ let updateStatus = (req: express.Request, res: express.Response, next: express.N
     status: req.body.status
   }).then(
 
-    res.status(200).send({message: 'success'})
+    res.status(200).send({success: true})
 
   ).catch((err: types.Error) => {
     next(err)
@@ -109,7 +109,7 @@ let deleteStatus = (req: express.Request, res: express.Response, next: express.N
     id: req.params.id
   }).then(
 
-    res.status(200).send({message: 'success'})
+    res.status(200).send({success: true})
 
   ).catch((err: types.Error) => {
     next(err)

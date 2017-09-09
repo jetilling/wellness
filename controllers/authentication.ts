@@ -152,29 +152,48 @@ let register = (req: express.Request, res: express.Response, next: express.NextF
             Insert new user information into the users table in the database
         */
         let token = randToken.generate(16);
+        let passwordHash: string;
+        let phoneHash: string;
+
         bcrypt.genSalt(10, function(err, salt)
         {
           if (err) return next(err)
-          bcrypt.hash(req.body.password, salt, null, function(err, hash)
-          {
+
+          /*
+              Encrypt the user's password
+          */
+          bcrypt.hash(req.body.password, salt, null, (err, hash) => {
             if (err) return next(err)
+            passwordHash = hash;
 
-            db.users.insert({
-              email: req.body.email,
-              password: hash, 
-              firstname: req.body.firstName, 
-              activated: 'FALSE',
-              email_validated: 'FALSE',
-              validation_token: token
-            }).then((result: types.RawUserObject) => {
+            /*
+                Encrypt the user's phone number
+            */
+            bcrypt.hash(req.body.phoneNumber, salt, null, (err, hash) => {
+              if (err) return next(err)
+              phoneHash = hash;
 
-                /* 
-                    Send the logged in user information to the front end
-                */
-                res.send( getSafeUser(result) )
+              /*
+                  Insert the user into the database
+              */
+              db.users.insert({
+                email: req.body.email,
+                password: passwordHash, 
+                firstname: req.body.firstName, 
+                activated: 'FALSE',
+                email_validated: 'FALSE',
+                validation_token: token,
+                phone_number: phoneHash
+              }).then((result: types.RawUserObject) => {
 
-            }).catch((err: types.Error) => {
-              console.log(err)
+                  /* 
+                      Send the logged in user information to the front end
+                  */
+                  res.send( getSafeUser(result) )
+
+              }).catch((err: types.Error) => {
+                console.log(err)
+              })
             })
           })
         })
