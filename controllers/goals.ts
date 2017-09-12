@@ -48,25 +48,35 @@ let createGoal = (req: types.expressRequest, res: express.Response, next: expres
 let createTags = (tags: [string], goal: types.IGoal, req: express.Request, res: express.Response, next: express.NextFunction) => {
 
   let db = req.app.get('db');
+
+  let addRelationsToTag = (tag: types.ITag, goal: types.IGoal) => {
+    db.relations_to_tag.insert({
+        goal_id: goal.id,
+        tags_id: tag.id,
+        user_id: goal.user_id
+    }).catch((err: types.Error) => {
+        next(err)
+    })
+  }
+
   for (let i = 0; i < tags.length; i++) {
-    db.tags.findOne({tag: tags[i]}).then((tag: string) => {
+    db.tags.findOne({tag: tags[i]}).then((tag: types.ITag) => {
 
       if (!tag) {
         db.tags.insert({
           tag: tags[i]
         }).then((tag: types.ITag) => {
           
-          db.relations_to_tag.insert({
-            goal_id: goal.id,
-            tags_id: tag.id,
-            user_id: goal.user_id
-           }).catch((err: types.Error) => {
-            next(err)
-           })
+            addRelationsToTag(tag, goal)
           
         }).catch((err: types.Error) => {
             next(err)
         })
+      }
+      else if (tag) {
+
+        addRelationsToTag(tag, goal)
+          
       }
     }).catch((err: types.Error) => {
         next(err)
