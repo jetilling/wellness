@@ -21,6 +21,19 @@ export interface Error {
 
 }
 
+export interface IGoal {
+  id: number,
+  user_id: number,
+  goal: string,
+  reminder: Date,
+  completed: Boolean
+}
+
+export interface ITag {
+  id: number,
+  tag: string
+}
+
 export interface RawStatusData {
   created_on: Date
 }
