@@ -18,6 +18,7 @@ import * as express from 'express';
 import * as authentication from './controllers/authentication';
 import * as statuses from './controllers/statuses';
 import * as goals from './controllers/goals';
+import * as goalData from './controllers/goalData';
 
 /*  
     Import type interfaces
@@ -65,6 +66,7 @@ export class WebApi
     app.use('/auth', authentication);
     app.use('/statuses', this.ensureAuthenticated, statuses);
     app.use('/goals', this.ensureAuthenticated, goals);
+    app.use('/goalData', this.ensureAuthenticated, goalData);
   }
 
   /**

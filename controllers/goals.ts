@@ -38,9 +38,16 @@ let createGoal = (req: types.expressRequest, res: express.Response, next: expres
 
     createTags(req.body.tags, goal, req, res, next);
 
-  }).catch((err: types.Error) => {
-      next(err)
-  })
+  }).catch((err: types.Error) => next(err))
+}
+
+let editGoal = (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
+
+  req.app.get('db').goals.update({
+    id: req.body.id,
+    goal: req.body.goal
+  }).catch((err: types.Error) => next(err))
+
 }
 
 /*=====================Helper Function==========================*/
@@ -87,6 +94,7 @@ let createTags = (tags: [string], goal: types.IGoal, req: express.Request, res: 
 
 /*===========================Endpoints============================*/
 
-goalRouter.post('/updateStatus', createGoal);
+goalRouter.post('/createGoal', createGoal);
+goalRouter.put('/editGoal', editGoal);
 
 export = goalRouter;

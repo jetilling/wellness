@@ -38,6 +38,10 @@ export interface RawStatusData {
   created_on: Date
 }
 
+export interface IRawGoalData {
+
+}
+
 export interface expressRequest extends express.Request {
   user: any
 }
