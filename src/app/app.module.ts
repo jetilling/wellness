@@ -5,7 +5,7 @@ import { ReactiveFormsModule, FormsModule }     from '@angular/forms';
 import { HttpModule, JsonpModule }              from '@angular/http';
 
 //--------Components---------//
-
+import { HomeComponent }                        from './landing/home/home.component';
 
 //--------Services---------//
 
@@ -23,12 +23,12 @@ import { AppRoutingModule }                     from './app-routing.module';
     ReactiveFormsModule
   ],
   declarations: [
-
+    HomeComponent
   ],
   providers: [
 
   ],
-  bootstrap: [ ]
+  bootstrap: [ HomeComponent ]
 })
 
 export class AppModule {}
