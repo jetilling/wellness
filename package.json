@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc -w",
-    "start": "concurrently \"npm run build:watch\" \"node start.js\""
+    "start": "concurrently \"npm run build:watch\" \"nodemon start.js\""
   },
   "repository": {
     "type": "git",

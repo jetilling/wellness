@@ -1,0 +1,67 @@
+html {
+  background: #FCFDFF
+}
+
+#title {
+  font-family: 'Pacifico', cursive;
+  color: #FCFDFF;
+  text-shadow: -2.5px 0 #0B486B, 0 2.5px #0B486B, 2.5px 0 #0B486B, 0 -2.5px #0B486B;
+  font-size: 50px;
+  /* display: flex;
+  justify-content: center; */
+  /* Style 1 - no background */
+
+  /* Style 2 */
+  /* background: #79BD9A; */
+}
+
+#nav-bar {
+  /* Style 1 background green or red */
+  /* background: #79BD9A; */
+  /* background: #F06060; */
+
+  /* Style 2 */
+  border-bottom: 4px solid #79BD9A;
+  background: #FCFDFF;
+}
+
+#nav-links {
+  height: 100%;
+}
+.nav-bar-element {
+  /* height: 100%; */
+  font-family: 'Loto', sans-serif;
+  font-size: 18px;
+  color: black
+}
+
+/* #title-grab-box {
+  display: flex;
+  justify-content: center;
+} */
+
+.login-font {
+  font-family: 'Loto', sans-serif;
+}
+
+.grab-word {
+  background: transparent;
+  color: #A8DBA8;
+  display: inline;
+}
+
+#title-grab {
+  font-family: 'Loto', sans-serif;
+  font-size: 40px;
+  text-align: center;
+}
+
+#submit-btn {
+  background: #79BD9A
+}
+
+@media(max-width: 320px) {
+  #title {
+    font-size: 20px;
+  }
+}
