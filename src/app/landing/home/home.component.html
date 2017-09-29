@@ -17,33 +17,18 @@
     </div> -->
   </div>
 
-  <div class="row">
+  <div class="row valign-wrapper">
     <div class="col s12 m5 l5">
       <div class="valign-wrapper center-align login-box">
         <div class="col card hoverable s10 m10 l10 pull-s1 pull-m1 pull-l1">
-          <form>
-            <div class="card-content">
-              <span class="card-title login-font">Login</span>
-              <div class="row">
-                  <div class="input-field col s12">
-                    <input id="email" type="email" class="validate">
-                    <label for="email" class="login-font">Email</label>
-                  </div>
-                </div>
-              <div class="row">
-                  <div class="input-field col s12">
-                    <input id="password" type="password" class="validate">
-                    <label for="password" class="login-font">Password</label>
-                  </div>
-                </div>
-            </div>
-            <div class="card-action right-align">
-              <a href="#" id="sign-up" class="left-align login-font">Sign up here</a>
-              <input type="submit" id="submit-btn" class="btn login-font" value="Login">
-            </div>
-          </form>
+          <login *ngIf="showLogin"></login>
+          <register *ngIf="showRegister"></register>
+          <a (click)="showRegisterForm()" *ngIf="showLogin" type="button" id="sign-up" class=" login-font">Sign up here</a>
+          <a (click)="showLoginForm()" *ngIf="showRegister" type="button" id="sign-up" class="login-font">Login here</a>
         </div>
       </div>
     </div>
-    <div class="col s12 m6 l6" id="title-grab">Get your life in <div class="grab-word">control</div> and find more time to be <div class="grab-word">yourself</div></div>
+    <div class="col s12 m6 l6">
+        <div class="" id="title-grab">Get your life in <div class="grab-word">control</div> and find more time to be <div class="grab-word">yourself</div></div>
+    </div>
   </div>

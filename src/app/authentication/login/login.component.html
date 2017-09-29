@@ -1,0 +1,20 @@
+<form class="login-form" name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+    <div class="card-content">
+      <span class="card-title login-font">Login</span>
+      <div class="input-field col s12 login-email" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
+            <input type="text" class="login-email-input" name="email" id="email" [(ngModel)]="model.email" #email="ngModel" required />
+            <label class="login-email-label login-font" for="email">Email</label>
+            <div *ngIf="f.submitted && !email.valid" class="login-email-error">Email is required</div>
+      </div> 
+      <div class="row">
+        <div class="input-field col s12 login-password" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+            <input type="password" class="login-password-input" name="password" id="password" [(ngModel)]="model.password" #password="ngModel" required />
+            <label class="login-password-label" for="password">Password</label>
+            <div *ngIf="f.submitted && !password.valid" class="login-password-error">Password is required</div>
+        </div>
+      </div>
+      <div class="card-action">
+          <button [disabled]="loading" id="submit-btn"  class="btn login-font login-button">Login</button>
+      </div>
+    </div>
+</form>

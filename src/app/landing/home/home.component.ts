@@ -13,7 +13,32 @@ export class HomeComponent
 {
 
   constructor(private router: Router){}
+  
+  /**
+   * Show the login form on initial load
+   */
+  showLogin = true;
 
+  /**
+   * Hide the register form on initial load
+   */
+  showRegister= false;
+  
+
+//--------------Methods---------------//
+
+  showLoginForm() {
+    this.showLogin = true;
+    this.showRegister = false;
+    console.log(this.showLogin)
+  }
+
+  showRegisterForm() {
+    this.showLogin = false;
+    this.showRegister = true;
+    console.log(this.showLogin)
+  }
+  
   // /**
   //  * The JSON web token of the currently logged in user
   //  */
