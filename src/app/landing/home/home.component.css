@@ -60,6 +60,10 @@ html {
   background: #79BD9A
 }
 
+#sign-up {
+  color: #0B486B
+}
+
 @media(max-width: 320px) {
   #title {
     font-size: 20px;

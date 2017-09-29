@@ -1,0 +1,35 @@
+<form class="register-form" name="form" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
+    <div class="card-content">
+      <span class="card-title login-font">Sign up</span>
+      <div class="input-field col s12  form-input" [ngClass]="{ 'has-error': f.submitted && !firstName.valid }">
+          <input class="field-input" type="text" name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel" required />
+          <label class="field-label" for="firstName">First Name</label>
+          <div *ngIf="f.submitted && !firstName.valid" class="form-firstName-error">First Name is required</div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12  form-input" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
+            <input class="field-input" type="text" name="email" [(ngModel)]="model.email" #email="ngModel" required />
+            <label class="field-label" for="email">Email</label>
+            <div *ngIf="f.submitted && !email.valid" class="form-email-error">Email is required</div>
+            <div *ngIf="emailIsAlreadyTaken" class="form-email-taken">Email already taken</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12  form-input" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
+            <input class="field-input" type="text" name="email" [(ngModel)]="model.phoneNumber" #email="ngModel" required />
+            <label class="field-label" for="email">Phone Number</label>
+            <div *ngIf="emailIsAlreadyTaken" class="form-email-taken">Phone Number is strangely already taken</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12  form-input" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+            <input class="field-input" type="password"name="password" minlength="8" [(ngModel)]="model.password" #password="ngModel" required />
+            <label class="field-label" for="password">Password</label>
+            <div *ngIf="f.submitted && !password.valid" class="form-password-error">Password of length 8 is required</div>
+        </div>
+      </div>
+      <div class="card-action">
+          <button [disabled]="loading"id="submit-btn"  class="btn login-font register-button">Register</button>
+      </div>
+    </div>
+  </form>

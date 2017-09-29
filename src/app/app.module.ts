@@ -6,9 +6,13 @@ import { HttpModule, JsonpModule }              from '@angular/http';
 
 //--------Components---------//
 import { HomeComponent }                        from './landing/home/home.component';
+import { LoginComponent }                       from './authentication/login/login.component';
+import { RegisterComponent }                    from './authentication/register/register.component';
 
 //--------Services---------//
-
+import { AuthService }                          from './services/auth.service';
+import { CommonFunctions }                      from './services/commonFunctions.service';
+import { UsersService }                         from './services/users.service';
 
 //--------Routing---------//
 import { AppRoutingModule }                     from './app-routing.module';
@@ -23,10 +27,14 @@ import { AppRoutingModule }                     from './app-routing.module';
     ReactiveFormsModule
   ],
   declarations: [
-    HomeComponent
+    HomeComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   providers: [
-
+    AuthService,
+    CommonFunctions,
+    UsersService
   ],
   bootstrap: [ HomeComponent ]
 })
